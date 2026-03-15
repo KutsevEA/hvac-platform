@@ -1,7 +1,7 @@
-# Snapshot 000 — Initial Repository State
+# Snapshot XXX — Title
 
 ## Purpose
-This snapshot records the initial state of the AI development system repository.
+Describe why this snapshot was created.
 
 ## Repository Structure
 
@@ -12,19 +12,14 @@ This snapshot records the initial state of the AI development system repository.
     /snapshots
     /templates
 
-## Existing Files
+## Changed Files
 
-/docs/registry/branch-registry.md  
-/docs/branches/master-orchestrator.md
+List files affected by this snapshot.
 
 ## Status
 
-Repository structure initialized.
-
-Branch memory system started.
-
-Master orchestrator branch created.
+Describe current system state.
 
 ## Notes
 
-Future snapshots will record important structural changes in the development system.
+Additional information if needed.
