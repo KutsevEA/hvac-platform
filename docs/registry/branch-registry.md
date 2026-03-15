@@ -1,10 +1,17 @@
 # Branch Registry
 
-This file tracks all branches of the AI development system.
+This document tracks the lifecycle and status of all AI branches in the development system.
+
+Branches can exist in the following states:
+
+Active — currently operating and maintaining their memory file.  
+Planned — approved but not yet initialized.  
+Paused — temporarily inactive but may be resumed later.  
+Archived — permanently closed branches kept only for historical reference.
 
 ---
 
-## Active Branches
+# Active Branches
 
 master-orchestrator  
 memory: /docs/branches/master-orchestrator.md
@@ -12,22 +19,25 @@ memory: /docs/branches/master-orchestrator.md
 repository-control  
 memory: /docs/branches/repository-control.md
 
----
-
-## Planned Branches
-
-architecture-core  
 snapshot-protocol  
-branch-governance  
+memory: /docs/branches/snapshot-protocol.md
 
 ---
 
-## Paused Branches
+# Planned Branches
+
+architecture-core
+
+branch-governance
+
+---
+
+# Paused Branches
 
 (none)
 
 ---
 
-## Archived Branches
+# Archived Branches
 
 (none)
