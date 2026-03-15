@@ -98,3 +98,20 @@ Stores repository checkpoints used for:
 • historical system states  
 
 Snapshots allow the AI development system to recover context when chat limits are reached.
+---
+
+# Governance Layer
+
+The system includes governance rules that control how AI branches interact with the repository.
+
+Governance rules define:
+
+• which files can be modified by branches  
+• which operations require user approval  
+• how structural changes are managed  
+
+Governance policies are stored in:
+
+/docs/canonical/branch-governance-rules.md
+
+These rules ensure the repository remains stable even when multiple AI branches operate in parallel.
