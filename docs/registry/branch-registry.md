@@ -25,11 +25,14 @@ memory: /docs/branches/snapshot-protocol.md
 architecture-core  
 memory: /docs/branches/architecture-core.md
 
+branch-governance  
+memory: /docs/branches/branch-governance.md
+
 ---
 
 # Planned Branches
 
-branch-governance
+(none)
 
 ---
 
