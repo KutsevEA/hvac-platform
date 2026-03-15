@@ -22,11 +22,12 @@ memory: /docs/branches/repository-control.md
 snapshot-protocol  
 memory: /docs/branches/snapshot-protocol.md
 
+architecture-core  
+memory: /docs/branches/architecture-core.md
+
 ---
 
 # Planned Branches
-
-architecture-core
 
 branch-governance
 
