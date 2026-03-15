@@ -1,33 +1,19 @@
-# BRANCH REGISTRY
-
-This file tracks all branches used in the AI development system.
-
----
-
-## Active Branches
+Active Branches
 
 master-orchestrator
+memory: /docs/branches/master-orchestrator.md
 
----
-
-## Planned Branches
+Planned Branches
 
 repository-control
-
 architecture-core
-
 snapshot-protocol
-
 branch-governance
 
----
-
-## Paused Branches
+Paused Branches
 
 (none)
 
----
-
-## Archived Branches
+Archived Branches
 
 (none)
