@@ -40,3 +40,61 @@ Templates used to create new files.
 ## Governance
 
 Structural changes should be documented via snapshots to maintain system stability.
+
+---
+
+# System Knowledge Layers
+
+The AI development system stores information in several structured layers.
+
+## Canonical Layer
+
+Location:
+
+/docs/canonical
+
+Purpose:
+
+Stores stable system knowledge including:
+
+• system principles  
+• repository rules  
+• development protocols  
+• governance policies  
+
+Canonical files are the **source of truth** for the development system.
+
+They change rarely and only with explicit user approval.
+
+## Branch Working Layer
+
+Location:
+
+/docs/branches
+
+Purpose:
+
+Stores working memory of each AI branch including:
+
+• current branch tasks  
+• branch decisions  
+• temporary context  
+• operational progress  
+
+These files may change frequently.
+
+## Snapshot Layer
+
+Location:
+
+/docs/snapshots
+
+Purpose:
+
+Stores repository checkpoints used for:
+
+• context reload  
+• branch restart  
+• historical system states  
+
+Snapshots allow the AI development system to recover context when chat limits are reached.
