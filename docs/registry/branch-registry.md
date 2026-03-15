@@ -9,11 +9,13 @@ This file tracks all branches of the AI development system.
 master-orchestrator  
 memory: /docs/branches/master-orchestrator.md
 
+repository-control  
+memory: /docs/branches/repository-control.md
+
 ---
 
 ## Planned Branches
 
-repository-control  
 architecture-core  
 snapshot-protocol  
 branch-governance  
