@@ -1,4 +1,8 @@
 # Project Architecture Map
+System Registry
+
+Official system list:
+/docs/project/systems/systems-index.md
 
 ## Project
 
