@@ -1,4 +1,4 @@
-# Snapshot 003 — Component Layer
+# Snapshot 007 — Component Layer
 
 ## Purpose
 
