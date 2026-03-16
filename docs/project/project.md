@@ -34,3 +34,8 @@ Architecture must remain modular and AI-decomposable.
 
 ## Notes
 This document represents the root of the project architecture.
+## Architecture
+
+Project architecture map:
+
+/docs/project/architecture-map.md
