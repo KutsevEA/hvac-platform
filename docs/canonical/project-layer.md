@@ -106,3 +106,16 @@ This layer allows AI branches to work on isolated modules without losing the ove
 ## Status
 
 Project Layer initialized.
+
+## Component Layer
+
+Components represent the smallest architectural building blocks of the project.
+
+Components belong to Modules.
+
+Hierarchy:
+
+Project  
+→ System  
+→ Module  
+→ Component
