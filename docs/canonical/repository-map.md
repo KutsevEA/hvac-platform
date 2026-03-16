@@ -219,3 +219,11 @@ Before creating a new file, the system should determine:
 ## Status
 
 Repository map initialized.
+---
+
+## Templates
+
+/docs/templates/project-definition-template.md
+
+Standard template for defining project elements
+(projects, systems, modules, components)
