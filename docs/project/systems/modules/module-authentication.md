@@ -34,3 +34,7 @@ Must follow secure authentication practices.
 
 ## Notes
 Initial authentication module for platform access.
+
+## Components
+
+Login
