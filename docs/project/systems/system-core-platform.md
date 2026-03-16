@@ -35,3 +35,7 @@ Must remain stable and modular.
 
 ## Notes
 This system represents the platform backbone.
+
+## Modules
+
+Authentication
