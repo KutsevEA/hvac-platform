@@ -8,13 +8,13 @@ AI Development Platform
 
 ## Systems
 
-Core Platform
+Identity & Access
 
 ---
 
 ## Modules
 
-Core Platform
+Identity & Access
     Authentication
 
 ---
@@ -29,6 +29,6 @@ Authentication
 ## Hierarchy
 
 Project
-    System: Core Platform
+    System: Identity & Access
         Module: Authentication
             Component: Login
