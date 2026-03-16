@@ -23,3 +23,12 @@ Core Platform
 
 Authentication
     Login
+
+---
+
+## Hierarchy
+
+Project
+    System: Core Platform
+        Module: Authentication
+            Component: Login
