@@ -2,116 +2,36 @@
 
 ## Purpose
 
-This repository contains the architecture for an AI-assisted development system.
+This repository supports an orchestrator/agent model of AI-assisted software development.
 
-The goal of the system is to allow complex software projects to be developed using multiple AI branches while avoiding context loss.
-
-The system relies on:
-
-• branch memory files  
-• snapshots  
-• canonical documentation  
-• controlled repository updates  
+The orchestrator (main Claude Code session) receives requirements, breaks them into tasks, and delegates each task to a specialized agent. Agents work in parallel where possible and return results to the orchestrator.
 
 ## Core Principles
 
-1. Canonical files are the source of truth.
-2. Branches operate using memory files.
-3. Snapshots allow safe context reload.
-4. The orchestrator controls structure changes.
+1. The orchestrator owns task decomposition and sequencing.
+2. Agents receive narrow, well-defined tasks with full context needed to complete them.
+3. Parallel execution is preferred when tasks have no dependencies.
+4. The project layer (docs/project/) is the source of truth for product architecture.
+5. Canonical files define stable rules that guide both orchestrator and agents.
+
+## Roles
+
+### Orchestrator
+- accepts requirements from the user
+- breaks work into tasks and records them in docs/tasks/
+- assigns tasks to agents
+- collects results and decides next steps
+- updates project documentation as architecture evolves
+
+### Agents
+- receive one task at a time
+- have access to files, bash, search, and web
+- operate independently within their task scope
+- return a result to the orchestrator
 
 ## Key Directories
 
-/docs/branches  
-Branch memory files.
-
-/docs/canonical  
-Stable documentation describing the system.
-
-/docs/registry  
-Registry of branches.
-
-/docs/snapshots  
-System state checkpoints.
-
-/docs/templates  
-Templates used to create new files.
-
-## Governance
-
-Structural changes should be documented via snapshots to maintain system stability.
-
----
-
-# System Knowledge Layers
-
-The AI development system stores information in several structured layers.
-
-## Canonical Layer
-
-Location:
-
-/docs/canonical
-
-Purpose:
-
-Stores stable system knowledge including:
-
-• system principles  
-• repository rules  
-• development protocols  
-• governance policies  
-
-Canonical files are the **source of truth** for the development system.
-
-They change rarely and only with explicit user approval.
-
-## Branch Working Layer
-
-Location:
-
-/docs/branches
-
-Purpose:
-
-Stores working memory of each AI branch including:
-
-• current branch tasks  
-• branch decisions  
-• temporary context  
-• operational progress  
-
-These files may change frequently.
-
-## Snapshot Layer
-
-Location:
-
-/docs/snapshots
-
-Purpose:
-
-Stores repository checkpoints used for:
-
-• context reload  
-• branch restart  
-• historical system states  
-
-Snapshots allow the AI development system to recover context when chat limits are reached.
----
-
-# Governance Layer
-
-The system includes governance rules that control how AI branches interact with the repository.
-
-Governance rules define:
-
-• which files can be modified by branches  
-• which operations require user approval  
-• how structural changes are managed  
-
-Governance policies are stored in:
-
-/docs/canonical/branch-governance-rules.md
-
-These rules ensure the repository remains stable even when multiple AI branches operate in parallel.
+/docs/canonical — stable rules and principles (given to agents as context)
+/docs/project — product architecture (Project → System → Module → Component)
+/docs/tasks — task queue managed by the orchestrator
+/docs/templates — reusable document templates

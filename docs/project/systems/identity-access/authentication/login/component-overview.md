@@ -1,29 +1,25 @@
-# Login Component
+# Login
 
-## Module
+## Type
+component
 
-Authentication
-
----
-
-## System
-
-Identity & Access
-
----
-
-## Purpose
-
-The Login component handles user sign-in entry points and credential submission.
-
----
+## Parent
+Authentication — /docs/project/systems/identity-access/authentication/module-overview.md
 
 ## Status
-
 Active
 
----
+## Purpose
+Entry point for user sign-in. Accepts credentials and triggers the authentication flow.
 
-## Description
+## Responsibilities
+- render the login form
+- submit credentials to the authentication service
+- handle success and error responses
+- redirect authenticated users
 
-This component is responsible for receiving user login input, passing credentials for verification, and initiating the authenticated access flow.
+## Children
+none
+
+## Notes
+First component defined in the project architecture.

@@ -2,107 +2,71 @@
 
 ## Purpose
 
-This document defines the structural map of the AI Development System repository.
-
-Its purpose is to provide a stable reference for:
-
-- repository folder roles
-- allowed file types by folder
-- relationships between system layers
-- navigation across the repository
-
-This file is part of the canonical layer.
+Defines the structural map of the repository and the role of each folder.
 
 ---
 
 ## Repository Root Structure
 
 /docs
-    /branches
     /canonical
-    /registry
-    /snapshots
+    /project
+    /tasks
     /templates
 
 ---
 
 ## Folder Definitions
 
-### /docs/branches
-
-Purpose:
-Stores branch memory files for active and future AI branches.
-
-Contents:
-- one memory file per branch
-- operational branch state
-- branch-local working context
-- temporary branch decisions
-- branch progress notes
-
-Rules:
-- branch files may evolve frequently
-- branch files are working memory, not canonical truth
-- branch files must stay aligned with canonical documents
-- each active branch should have one corresponding branch memory file
-
----
-
 ### /docs/canonical
 
 Purpose:
-Stores stable system-level documentation.
+Stores stable system-level rules and principles.
 
 Contents:
-- system rules
-- structural definitions
-- governance rules
-- reload rules
-- branch creation rules
-- repository-wide concepts
+- system overview and model description
+- repository map (this file)
+- governance rules for agents
 
 Rules:
-- canonical files define stable truth
-- changes to canonical files must be intentional
-- canonical files should not contain temporary branch-level notes
-- canonical files should change less often than working files
+- canonical files are the source of truth
+- changes require explicit user approval
+- agents may read canonical files but not modify them
 
 ---
 
-### /docs/registry
+### /docs/project
 
 Purpose:
-Stores official branch registration and branch status tracking.
+Stores the hierarchical architecture of the product being developed.
 
 Contents:
-- branch registry
-- branch lifecycle status
-- mapping of branches to memory files
-- branch activity tracking
+- project root definition
+- system definitions (one subfolder per system)
+- module definitions (nested inside system folders)
+- component definitions (nested inside module folders)
+- architecture map and systems index
 
 Rules:
-- every official branch must appear in the registry
-- branch status changes must be reflected here
-- registry is the official branch index for the system
+- structure follows the four-level hierarchy: Project → System → Module → Component
+- each element is documented using the project-definition-template
+- the orchestrator updates this layer as architecture decisions are made
+- systems-index.md is the authoritative list of active systems
 
 ---
 
-### /docs/snapshots
+### /docs/tasks
 
 Purpose:
-Stores repository state snapshots used for context reload.
+Stores the task queue managed by the orchestrator.
 
 Contents:
-- numbered repository snapshots
-- major structural checkpoints
-- branch initialization milestones
-- reload state summaries
+- tasks-index.md — master list of all tasks with status
 
 Rules:
-- snapshots record important system state transitions
-- snapshots must be sequentially numbered
-- snapshots should be concise but sufficient for reload
-- snapshots do not replace canonical documentation
+- orchestrator creates and updates tasks
+- agents do not modify the task index directly
+- completed tasks are moved to the Completed section
 
 ---
 
@@ -112,118 +76,30 @@ Purpose:
 Stores reusable templates for system documents.
 
 Contents:
-- branch memory template
-- snapshot template
-- future templates for canonical and governance files
+- branch-memory-template.md
+- project-definition-template.md
+- snapshot-template.md
 
 Rules:
-- templates define preferred structure
-- templates are reusable starting points
-- templates do not represent active system state
+- templates are starting points, not active documents
+- agents use templates when creating new project-layer files
 
 ---
 
-## Layer Mapping
+## Layer Priority
 
-### Canonical Layer
-Primary folder:
-- /docs/canonical
+When interpreting any file in the repository:
 
-Role:
-Stores stable knowledge about how the AI Development System works.
-
----
-
-### Governance Layer
-Primary folders:
-- /docs/canonical
-- /docs/registry
-
-Role:
-Controls how branches, files, and structural changes are managed.
-
----
-
-### Architecture Layer
-Primary folders:
-- /docs/canonical
-- /docs/registry
-
-Role:
-Defines repository structure, branch roles, and system organization.
-
----
-
-### Snapshot Layer
-Primary folder:
-- /docs/snapshots
-
-Role:
-Preserves important system states for branch reload and continuity.
-
----
-
-### Branch Memory Layer
-Primary folder:
-- /docs/branches
-
-Role:
-Stores active operational context for each AI branch.
-
----
-
-## Relationship Between Folders
-
-### Canonical and Branches
-Canonical files define stable truth.
-Branch files use that truth for ongoing work.
-
-### Registry and Branches
-The registry tracks which branches exist.
-Branch memory files store the live state of those branches.
-
-### Snapshots and Canonical
-Snapshots reference canonical state at important milestones.
-They do not replace canonical documents.
-
-### Templates and All Other Folders
-Templates provide reusable structures for creating new documents across the system.
-
----
-
-## Repository Navigation Rule
-
-When evaluating any file in the repository, priority should be interpreted as:
-
-1. canonical documents define stable rules
-2. registry defines official branch status
-3. branch memory defines operational branch context
-4. snapshots define reload checkpoints
-5. templates define reusable starting structures
+1. canonical — defines stable rules
+2. project — defines current product architecture
+3. tasks — defines current work in progress
+4. templates — defines document structure
 
 ---
 
 ## File Creation Rule
 
-New files should be created only when their role is clear within this repository map.
-
-Before creating a new file, the system should determine:
-
+Before creating a new file, determine:
 - which folder it belongs to
-- whether it is canonical or working
-- whether an existing file already serves that purpose
-- whether the new file affects branch governance or reload logic
-
----
-
-## Status
-
-Repository map initialized.
----
-
-## Templates
-
-/docs/templates/project-definition-template.md
-
-Standard template for defining project elements
-(projects, systems, modules, components)
+- whether it already exists
+- whether it requires orchestrator approval

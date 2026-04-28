@@ -1,7 +1,4 @@
-# Project: HVAC Platform
-
-## Purpose
-Define the overall project being developed inside the AI Development System.
+# HVAC Platform
 
 ## Type
 project
@@ -9,33 +6,18 @@ project
 ## Parent
 none
 
-## Children
-systems/
+## Status
+Active
+
+## Purpose
+A client-first HVAC platform for managing equipment, service requests, and field operations.
 
 ## Responsibilities
-Define the scope and architecture of the platform.
+- define the overall product scope and architecture
+- contain all systems that make up the platform
 
-## Inputs
-Business requirements  
-Architecture decisions
-
-## Outputs
-System definitions  
-Module structure
-
-## Dependencies
-AI Development System architecture
-
-## Interfaces
-All systems within the platform
-
-## Constraints
-Architecture must remain modular and AI-decomposable.
+## Children
+- Identity & Access
 
 ## Notes
-This document represents the root of the project architecture.
-## Architecture
-
-Project architecture map:
-
-/docs/project/architecture-map.md
+Architecture must remain modular so each system can be developed and deployed independently.

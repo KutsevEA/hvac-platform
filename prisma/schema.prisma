@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id               String   @id @default(cuid())
+  title            String
+  model            String   @default("")
+  serialNumber     String   @default("")
+  shortDescription String
+  fullDescription  String
+  price            Float
+  images           String   @default("[]")
+  mainImageIndex   Int      @default(0)
+  status           String   @default("active")
+  badge            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Customer {
+  id         String    @id @default(cuid())
+  phone      String    @unique
+  name       String    @default("")
+  company    String    @default("")
+  customerNo String    @default("")
+  email      String    @default("")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  sessions   Session[]
+}
+
+model Session {
+  id          String    @id @default(cuid())
+  customerId  String
+  customer    Customer  @relation(fields: [customerId], references: [id])
+  status      String    @default("active") // active | completed
+  locked      Boolean   @default(true)
+  waMessageId String?
+  notes       String    @default("")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

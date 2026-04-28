@@ -6,7 +6,7 @@ Official system list:
 
 ## Project
 
-AI Development Platform
+HVAC Platform
 
 ---
 

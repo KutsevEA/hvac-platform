@@ -1,38 +1,23 @@
-# Project Definition Template
-
-## Purpose
-Describe what this project element is and why it exists.
+# [Element Name]
 
 ## Type
-Specify whether this is:
-- project
-- system
-- module
-- component
+project / system / module / component
 
 ## Parent
-Reference the parent element, if any.
+Name of parent element and path to its file.
 
-## Children
-List child elements, if any.
+## Status
+Active / Planned / Paused / Archived
+
+## Purpose
+What this element does and why it exists.
 
 ## Responsibilities
-Describe the main responsibilities of this element.
+- responsibility 1
+- responsibility 2
 
-## Inputs
-List the main inputs this element receives.
-
-## Outputs
-List the main outputs this element produces.
-
-## Dependencies
-List other elements, services, or rules this element depends on.
-
-## Interfaces
-Describe how this element interacts with other elements.
-
-## Constraints
-List important limitations, rules, or boundaries.
+## Children
+List of child elements (systems / modules / components contained within).
 
 ## Notes
-Additional operational or architectural notes.
+Any additional architectural context.

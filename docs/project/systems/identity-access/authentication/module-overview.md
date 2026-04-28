@@ -1,29 +1,27 @@
-# Authentication Module
+# Authentication
 
-## System
+## Type
+module
 
-Identity & Access
-
----
-
-## Purpose
-
-The Authentication module manages user identity verification and login processes.
-
----
+## Parent
+Identity & Access — /docs/project/systems/identity-access/system-overview.md
 
 ## Status
-
 Active
 
----
+## Purpose
+Handles user identity verification and session establishment.
 
-## Components
+## Responsibilities
+- validate user credentials
+- establish authenticated sessions
+- manage login and logout flows
 
+## Children
 - Login
+- Logout (planned)
+- Session Manager (planned)
+- Token Service (planned)
 
----
-
-## Description
-
-This module is responsible for validating user credentials and establishing authenticated sessions within the platform.
+## Notes
+Core module for all user-facing access to the platform.

@@ -1,31 +1,24 @@
-# Identity & Access — System Overview
+# Identity & Access
 
-## Purpose
+## Type
+system
 
-This document defines the Identity & Access system in the Project Layer.
-
-It serves as the top-level description of the system.
-
----
-
-## System Name
-
-Identity & Access
-
----
+## Parent
+HVAC Platform — /docs/project/project.md
 
 ## Status
-
 Active
 
----
+## Purpose
+Manages user identity, authentication, and access control across the platform.
 
-## Modules
+## Responsibilities
+- verify user identity before granting access
+- manage user sessions and tokens
+- control permissions and roles
 
+## Children
 - Authentication
 
----
-
 ## Notes
-
-This is the first active system defined in the project architecture.
+First system defined in the project architecture.
