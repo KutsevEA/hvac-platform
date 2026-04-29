@@ -6,10 +6,6 @@ import Image from 'next/image'
 import { Product } from '@/lib/types'
 import { formatPrice, getMainImage } from '@/lib/utils'
 
-// Note: This fetches /api/products which returns only active products.
-// To see hidden products, the API would need to support ?all=true to skip the status filter.
-// For now, admin manages active products and can toggle status to hidden via the edit page.
-
 export default function AdminPage() {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
@@ -20,111 +16,129 @@ export default function AdminPage() {
     try {
       const res = await fetch('/api/products?all=true')
       const data = await res.json()
-      setProducts(data)
-    } catch (err) {
-      console.error('Failed to load products', err)
+      setProducts(Array.isArray(data) ? data : [])
+    } catch {
+      setProducts([])
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => {
-    loadProducts()
-  }, [])
+  useEffect(() => { loadProducts() }, [])
 
   async function handleDelete(id: string) {
-    const confirmed = confirm('Are you sure you want to delete this product?')
-    if (!confirmed) return
-    try {
-      await fetch(`/api/products/${id}`, { method: 'DELETE' })
-      await loadProducts()
-    } catch (err) {
-      console.error('Failed to delete product', err)
-    }
+    if (!confirm('Delete this product?')) return
+    await fetch(`/api/products/${id}`, { method: 'DELETE' })
+    loadProducts()
   }
 
+  async function handleSignOut() {
+    await fetch('/api/admin/auth', { method: 'DELETE' })
+    router.push('/admin/login')
+  }
+
+  const formattedDate = (d: string) =>
+    new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f7' }}>
-      {/* Header bar */}
-      <div
-        style={{
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #e5e5e5',
-          height: '64px',
-          paddingLeft: '32px',
-          paddingRight: '32px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          <span style={{ fontSize: '16px', fontWeight: 600, color: '#1d1d1f' }}>Admin</span>
-          <span style={{ fontSize: '16px', color: '#6e6e73' }}> / Products</span>
+    <div className="min-h-screen bg-[#f5f5f7]" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+
+      {/* Header */}
+      <div className="bg-white border-b border-[#e5e5e5] px-4 md:px-8 h-16 flex items-center justify-between sticky top-0 z-10">
+        <div className="text-[15px] font-semibold text-[#1d1d1f]">
+          Admin <span className="text-[#6e6e73] font-normal">/ Products</span>
         </div>
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => router.push('/admin/products/new')}
-            style={{
-              backgroundColor: '#1d1d1f',
-              color: '#ffffff',
-              padding: '8px 16px',
-              borderRadius: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              border: 'none',
-              cursor: 'pointer',
-            }}
+            className="bg-[#1d1d1f] text-white text-sm font-medium px-4 py-2 rounded-lg"
           >
-            Add Product
+            + Add
           </button>
           <button
-            onClick={async () => {
-              await fetch('/api/admin/auth', { method: 'DELETE' })
-              router.push('/admin/login')
-            }}
-            style={{
-              backgroundColor: 'transparent',
-              color: '#6e6e73',
-              padding: '8px 16px',
-              borderRadius: '8px',
-              fontSize: '14px',
-              border: '1px solid #e5e5e5',
-              cursor: 'pointer',
-            }}
+            onClick={handleSignOut}
+            className="text-[#6e6e73] text-sm border border-[#e5e5e5] px-4 py-2 rounded-lg bg-white"
           >
             Sign out
           </button>
         </div>
       </div>
 
-      {/* Main content */}
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px' }}>
-        <div
-          style={{
-            backgroundColor: '#ffffff',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-          }}
-        >
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-6">
+
+        {/* ── Mobile: card list ── */}
+        <div className="flex flex-col gap-3 md:hidden">
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-4 flex gap-3 animate-pulse">
+                <div className="w-16 h-16 rounded-xl bg-[#e5e5e5] shrink-0" />
+                <div className="flex-1 flex flex-col gap-2 justify-center">
+                  <div className="h-4 bg-[#e5e5e5] rounded w-3/4" />
+                  <div className="h-3 bg-[#e5e5e5] rounded w-1/4" />
+                </div>
+              </div>
+            ))
+          ) : products.length === 0 ? (
+            <div className="text-center py-20 text-[#6e6e73] text-sm">
+              No products yet. Tap + Add to create one.
+            </div>
+          ) : (
+            products.map((product) => {
+              const img = getMainImage(product)
+              return (
+                <div
+                  key={product.id}
+                  className="bg-white rounded-2xl p-4 flex gap-3 shadow-sm"
+                >
+                  {/* Thumbnail */}
+                  <div className="w-16 h-16 rounded-xl bg-[#f5f5f7] overflow-hidden relative shrink-0">
+                    {img && <Image src={img} alt={product.title} fill style={{ objectFit: 'contain' }} />}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[15px] font-medium text-[#1d1d1f] truncate">{product.title}</div>
+                    <div className="text-sm text-[#6e6e73] mt-0.5">{formatPrice(product.price)}</div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                        product.status === 'active'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-gray-100 text-gray-500'
+                      }`}>
+                        {product.status}
+                      </span>
+                      <span className="text-xs text-[#6e6e73]">{formattedDate(product.createdAt)}</span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-col gap-2 justify-center shrink-0">
+                    <button
+                      onClick={() => router.push(`/admin/products/${product.id}/edit`)}
+                      className="text-[#0071e3] text-sm font-medium"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className="text-red-500 text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+
+        {/* ── Desktop: table ── */}
+        <div className="hidden md:block bg-white rounded-2xl overflow-hidden shadow-sm">
+          <table className="w-full border-collapse">
             <thead>
-              <tr style={{ backgroundColor: '#f5f5f7' }}>
+              <tr className="bg-[#f5f5f7]">
                 {['Image', 'Title', 'Price', 'Status', 'Date', 'Actions'].map((col) => (
-                  <th
-                    key={col}
-                    style={{
-                      textAlign: 'left',
-                      fontSize: '12px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      color: '#6e6e73',
-                      padding: '12px 20px',
-                      borderBottom: '1px solid #e5e5e5',
-                      fontWeight: 600,
-                    }}
-                  >
+                  <th key={col} className="text-left text-xs uppercase tracking-wider text-[#6e6e73] font-semibold px-5 py-3 border-b border-[#e5e5e5]">
                     {col}
                   </th>
                 ))}
@@ -132,147 +146,52 @@ export default function AdminPage() {
             </thead>
             <tbody>
               {loading ? (
-                // 5 skeleton rows
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
                     {[48, 200, 80, 80, 100, 120].map((w, j) => (
-                      <td key={j} style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <div
-                          style={{
-                            height: j === 0 ? '48px' : '16px',
-                            width: j === 0 ? '48px' : `${w}px`,
-                            backgroundColor: '#e5e5e5',
-                            borderRadius: '6px',
-                            animation: 'pulse 1.5s ease-in-out infinite',
-                          }}
-                        />
+                      <td key={j} className="px-5 py-4 border-b border-[#f5f5f7]">
+                        <div className="animate-pulse bg-[#e5e5e5] rounded" style={{ height: j === 0 ? 48 : 16, width: j === 0 ? 48 : w }} />
                       </td>
                     ))}
                   </tr>
                 ))
               ) : products.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={6}
-                    style={{
-                      padding: '64px 20px',
-                      textAlign: 'center',
-                      color: '#6e6e73',
-                      fontSize: '15px',
-                    }}
-                  >
+                  <td colSpan={6} className="px-5 py-16 text-center text-[#6e6e73] text-sm">
                     No products yet. Add your first product.
                   </td>
                 </tr>
               ) : (
                 products.map((product) => {
-                  const mainImage = getMainImage(product)
-                  const formattedDate = new Date(product.createdAt).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })
+                  const img = getMainImage(product)
                   return (
-                    <tr key={product.id}>
-                      {/* Image */}
-                      <td style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <div
-                          style={{
-                            width: '48px',
-                            height: '48px',
-                            backgroundColor: '#f5f5f7',
-                            borderRadius: '8px',
-                            overflow: 'hidden',
-                            position: 'relative',
-                            flexShrink: 0,
-                          }}
-                        >
-                          {mainImage ? (
-                            <Image
-                              src={mainImage}
-                              alt={product.title}
-                              fill
-                              style={{ objectFit: 'contain' }}
-                            />
-                          ) : null}
+                    <tr key={product.id} className="hover:bg-[#fafafa] transition-colors">
+                      <td className="px-5 py-4 border-b border-[#f5f5f7]">
+                        <div className="w-12 h-12 rounded-lg bg-[#f5f5f7] overflow-hidden relative">
+                          {img && <Image src={img} alt={product.title} fill style={{ objectFit: 'contain' }} />}
                         </div>
                       </td>
-
-                      {/* Title */}
-                      <td style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <div
-                          style={{
-                            fontSize: '15px',
-                            color: '#1d1d1f',
-                            fontWeight: 500,
-                            maxWidth: '240px',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          {product.title}
-                        </div>
+                      <td className="px-5 py-4 border-b border-[#f5f5f7]">
+                        <div className="text-[15px] font-medium text-[#1d1d1f] max-w-[240px] truncate">{product.title}</div>
                       </td>
-
-                      {/* Price */}
-                      <td style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <span style={{ fontSize: '15px', color: '#1d1d1f' }}>
-                          {formatPrice(product.price)}
-                        </span>
+                      <td className="px-5 py-4 border-b border-[#f5f5f7] text-[15px] text-[#1d1d1f]">
+                        {formatPrice(product.price)}
                       </td>
-
-                      {/* Status */}
-                      <td style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            padding: '4px 12px',
-                            borderRadius: '9999px',
-                            fontSize: '14px',
-                            backgroundColor: product.status === 'active' ? '#d1fae5' : '#f3f4f6',
-                            color: product.status === 'active' ? '#065f46' : '#6e6e73',
-                            fontWeight: 500,
-                          }}
-                        >
+                      <td className="px-5 py-4 border-b border-[#f5f5f7]">
+                        <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                          product.status === 'active'
+                            ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-gray-100 text-gray-500'
+                        }`}>
                           {product.status}
                         </span>
                       </td>
-
-                      {/* Date */}
-                      <td style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <span style={{ fontSize: '14px', color: '#6e6e73' }}>{formattedDate}</span>
+                      <td className="px-5 py-4 border-b border-[#f5f5f7] text-sm text-[#6e6e73]">
+                        {formattedDate(product.createdAt)}
                       </td>
-
-                      {/* Actions */}
-                      <td style={{ padding: '16px 20px', borderBottom: '1px solid #f5f5f7', verticalAlign: 'middle' }}>
-                        <button
-                          onClick={() => router.push(`/admin/products/${product.id}/edit`)}
-                          style={{
-                            color: '#0071e3',
-                            fontSize: '14px',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            marginRight: '16px',
-                            padding: 0,
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          style={{
-                            color: '#ef4444',
-                            fontSize: '14px',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            padding: 0,
-                          }}
-                        >
-                          Delete
-                        </button>
+                      <td className="px-5 py-4 border-b border-[#f5f5f7]">
+                        <button onClick={() => router.push(`/admin/products/${product.id}/edit`)} className="text-[#0071e3] text-sm mr-4">Edit</button>
+                        <button onClick={() => handleDelete(product.id)} className="text-red-500 text-sm">Delete</button>
                       </td>
                     </tr>
                   )
@@ -282,13 +201,6 @@ export default function AdminPage() {
           </table>
         </div>
       </div>
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-      `}</style>
     </div>
   )
 }
