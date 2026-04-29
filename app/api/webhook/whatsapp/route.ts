@@ -20,11 +20,14 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    console.log('WhatsApp webhook payload:', JSON.stringify(body, null, 2))
 
     const entry = body?.entry?.[0]
     const change = entry?.changes?.[0]
     const value = change?.value
     const messages = value?.messages
+
+    console.log('Messages found:', messages?.length ?? 0, 'Statuses:', value?.statuses?.length ?? 0)
 
     if (!messages || messages.length === 0) {
       return NextResponse.json({ status: 'no_messages' })
