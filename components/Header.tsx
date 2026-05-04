@@ -1,11 +1,13 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 h-16 bg-white/90 backdrop-blur-sm border-b border-[#e5e5e5]">
       <div className="max-w-[1200px] mx-auto px-6 h-full flex items-center justify-between">
         {/* Left: branding */}
-        <div className="flex flex-col justify-center">
+        <Link href="/" style={{ textDecoration: 'none' }} className="flex flex-col justify-center">
           <span
             style={{
               fontSize: '16px',
@@ -28,7 +30,7 @@ export default function Header() {
           >
             Updated regularly
           </span>
-        </div>
+        </Link>
 
         {/* Right: Contact button */}
         <button
