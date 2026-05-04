@@ -22,6 +22,7 @@ export default function FeaturedProduct({ product, onClick }: FeaturedProductPro
 
   return (
     <div
+      onClick={onClick}
       style={{
         backgroundColor: '#f5f5f7',
         borderRadius: '16px',
@@ -30,6 +31,7 @@ export default function FeaturedProduct({ product, onClick }: FeaturedProductPro
         opacity: mounted ? 1 : 0,
         transition: 'opacity 500ms ease',
         fontFamily: 'system-ui, -apple-system, Inter, sans-serif',
+        cursor: 'pointer',
       }}
       className="flex-col md:flex-row md:h-[440px]"
     >
