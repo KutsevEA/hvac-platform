@@ -63,7 +63,7 @@ export default function FeaturedProduct({ product, onClick }: FeaturedProductPro
           >
             <Image
               src={mainImage}
-              alt={product.title}
+              alt={product.model}
               fill
               priority
               sizes="(max-width: 768px) 100vw, 60vw"
@@ -117,7 +117,7 @@ export default function FeaturedProduct({ product, onClick }: FeaturedProductPro
           Featured Unit
         </span>
 
-        {/* Product title */}
+        {/* Product model */}
         <h2
           style={{
             fontSize: 'clamp(24px, 3vw, 32px)',
@@ -131,7 +131,7 @@ export default function FeaturedProduct({ product, onClick }: FeaturedProductPro
             lineHeight: 1.2,
           }}
         >
-          {product.title}
+          {product.model}
         </h2>
 
         {/* Price */}

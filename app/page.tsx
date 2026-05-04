@@ -52,7 +52,7 @@ export default function Page() {
     return rest.filter((product) => {
       if (
         filters.search &&
-        !product.title.toLowerCase().includes(filters.search.toLowerCase())
+        !product.model.toLowerCase().includes(filters.search.toLowerCase())
       ) {
         return false
       }

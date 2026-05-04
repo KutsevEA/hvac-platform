@@ -50,6 +50,16 @@ Customer  — registered customers (unique by phone)
 Session   — WhatsApp check-in sessions (active | completed)
 ```
 
+## Product Display Rules
+
+| Field | Where used |
+|---|---|
+| `model` | Primary product name shown in ProductCard and FeaturedProduct |
+| `title` | Internal/admin label only (not shown on public pages) |
+| `price` | Displayed separately below model name |
+| `shortDescription` | Shown in card body and featured block |
+| `badge` | Optional label (e.g. "New Arrival") above model name |
+
 ## Systems
 
 ```

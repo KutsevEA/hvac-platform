@@ -59,7 +59,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         {mainImage ? (
           <Image
             src={mainImage}
-            alt={product.title}
+            alt={product.model}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             style={{ objectFit: 'contain', padding: '16px' }}
@@ -101,7 +101,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
           </span>
         )}
 
-        {/* Title */}
+        {/* Model */}
         <h3
           style={{
             fontSize: '18px',
@@ -115,7 +115,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
             lineHeight: 1.35,
           }}
         >
-          {product.title}
+          {product.model}
         </h3>
 
         {/* Price */}
