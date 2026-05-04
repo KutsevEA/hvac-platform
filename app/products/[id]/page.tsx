@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Header from '@/components/Header'
@@ -27,7 +27,37 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const [loading, setLoading] = useState(true)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [notFound, setNotFound] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const touchStartX = useRef<number | null>(null)
+  const lbTouchStartX = useRef<number | null>(null)
+
+  const openLightbox = useCallback(() => setLightboxOpen(true), [])
+  const closeLightbox = useCallback(() => setLightboxOpen(false), [])
+
+  const lbPrev = useCallback(() => {
+    if (!product) return
+    setSelectedImageIndex((i) => (i - 1 + product.images.length) % product.images.length)
+  }, [product])
+
+  const lbNext = useCallback(() => {
+    if (!product) return
+    setSelectedImageIndex((i) => (i + 1) % product.images.length)
+  }, [product])
+
+  useEffect(() => {
+    if (!lightboxOpen) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') lbPrev()
+      if (e.key === 'ArrowRight') lbNext()
+    }
+    window.addEventListener('keydown', onKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = ''
+    }
+  }, [lightboxOpen, closeLightbox, lbPrev, lbNext])
 
   useEffect(() => {
     async function fetchProduct() {
@@ -111,7 +141,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
           {/* ── Gallery ── */}
           <div className="flex-shrink-0 w-full md:w-[58%]">
-            {/* Main image — swipeable */}
+            {/* Main image — swipeable, clickable to fullscreen */}
             <div
               style={{
                 backgroundColor: '#f5f5f7',
@@ -123,7 +153,9 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 justifyContent: 'center',
                 overflow: 'hidden',
                 userSelect: 'none',
+                cursor: currentImage ? 'zoom-in' : 'default',
               }}
+              onClick={() => { if (currentImage) openLightbox() }}
               onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX }}
               onTouchEnd={(e) => {
                 if (touchStartX.current === null || !product) return
@@ -146,6 +178,24 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                 />
               ) : (
                 <div style={{ width: '100%', height: '100%', backgroundColor: '#e5e5e5', borderRadius: 12 }} />
+              )}
+
+              {/* Zoom hint */}
+              {currentImage && (
+                <span style={{
+                  position: 'absolute', bottom: 12, right: 12,
+                  backgroundColor: 'rgba(29,29,31,0.5)',
+                  backdropFilter: 'blur(6px)',
+                  borderRadius: 8, padding: '4px 8px',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  color: '#ffffff', fontSize: 11, pointerEvents: 'none',
+                }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                  </svg>
+                  Zoom
+                </span>
               )}
 
               {/* Badge overlay */}
@@ -305,6 +355,120 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       </div>
+
+      {/* ── Lightbox ── */}
+      {lightboxOpen && currentImage && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            backgroundColor: 'rgba(0,0,0,0.92)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+          onClick={closeLightbox}
+          onTouchStart={(e) => { lbTouchStartX.current = e.touches[0].clientX }}
+          onTouchEnd={(e) => {
+            if (lbTouchStartX.current === null || !product) return
+            const dx = e.changedTouches[0].clientX - lbTouchStartX.current
+            if (Math.abs(dx) < 40) return
+            e.stopPropagation()
+            if (dx < 0) lbNext()
+            else lbPrev()
+            lbTouchStartX.current = null
+          }}
+        >
+          {/* Image */}
+          <div
+            style={{ position: 'relative', width: '100%', height: '100%', maxWidth: 1200 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={product.images[selectedImageIndex]}
+              alt={product.title}
+              fill
+              sizes="100vw"
+              style={{ objectFit: 'contain', padding: '48px 72px' }}
+              priority
+            />
+          </div>
+
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            style={{
+              position: 'fixed', top: 16, right: 16,
+              background: 'rgba(255,255,255,0.1)', border: 'none',
+              borderRadius: '50%', width: 44, height: 44,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#ffffff', backdropFilter: 'blur(6px)',
+            }}
+            aria-label="Close"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+
+          {/* Prev arrow */}
+          {product.images.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); lbPrev() }}
+              style={{
+                position: 'fixed', left: 16, top: '50%', transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,0.1)', border: 'none',
+                borderRadius: '50%', width: 48, height: 48,
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#ffffff', backdropFilter: 'blur(6px)',
+              }}
+              aria-label="Previous image"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+          )}
+
+          {/* Next arrow */}
+          {product.images.length > 1 && (
+            <button
+              onClick={(e) => { e.stopPropagation(); lbNext() }}
+              style={{
+                position: 'fixed', right: 16, top: '50%', transform: 'translateY(-50%)',
+                background: 'rgba(255,255,255,0.1)', border: 'none',
+                borderRadius: '50%', width: 48, height: 48,
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#ffffff', backdropFilter: 'blur(6px)',
+              }}
+              aria-label="Next image"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          )}
+
+          {/* Dots counter */}
+          {product.images.length > 1 && (
+            <div style={{
+              position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+              display: 'flex', gap: 8, alignItems: 'center',
+            }}>
+              {product.images.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => { e.stopPropagation(); setSelectedImageIndex(idx) }}
+                  style={{
+                    width: idx === selectedImageIndex ? 24 : 7,
+                    height: 7, borderRadius: 4,
+                    backgroundColor: idx === selectedImageIndex ? '#ffffff' : 'rgba(255,255,255,0.35)',
+                    border: 'none', padding: 0, cursor: 'pointer',
+                    transition: 'all 200ms ease',
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
