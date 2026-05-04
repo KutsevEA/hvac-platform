@@ -10,7 +10,7 @@ none
 Active — deployed to production (Vercel + Supabase)
 
 ## Purpose
-A multi-interface platform for selling damaged/clearance HVAC equipment and managing customer check-ins via WhatsApp.
+A multi-interface platform for selling damaged/clearance HVAC equipment and managing customer check-ins via WhatsApp (check-in flow built; WhatsApp Business account pending — contact CTA temporarily via email).
 
 ## Production URL
 https://hvac-platform-eta.vercel.app
@@ -21,7 +21,8 @@ https://hvac-platform-eta.vercel.app
 - **Storage:** Supabase Storage (production) / local filesystem (dev)
 - **Realtime:** Supabase Realtime (postgres_changes)
 - **Deployment:** Vercel (auto-deploy from GitHub main branch)
-- **Messaging:** WhatsApp Business API (Meta webhook)
+- **Messaging:** WhatsApp Business API (Meta webhook) — backend ready; Business account pending
+- **Contact CTA:** Email (`counterburnaby@master.ca`) — temporary until WhatsApp Business is connected
 
 ## Systems
 
@@ -35,7 +36,7 @@ https://hvac-platform-eta.vercel.app
 | URL | Description |
 |---|---|
 | `/` | Public product showcase |
-| `/products/[id]` | Product detail with gallery + WhatsApp CTA |
+| `/products/[id]` | Product detail with gallery (lightbox), email CTA |
 | `/admin` | Admin product list |
 | `/admin/login` | Admin login |
 | `/operator` | Operator dashboard (dark, realtime) |
@@ -44,3 +45,6 @@ https://hvac-platform-eta.vercel.app
 
 ## Notes
 Architecture is modular — each interface is independent and can be extended without affecting others.
+
+## Pending / In Progress
+- **WhatsApp Business account** — backend webhook is fully built and deployed. Once the Business account is approved, uncomment WhatsApp CTA in `app/products/[id]/page.tsx` and remove email CTA.

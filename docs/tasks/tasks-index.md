@@ -22,6 +22,18 @@ Description: /, hero section, featured product, product grid with filters, trust
 Status: done
 Description: /products/[id], image gallery with swipe gestures, model/serial info, WhatsApp CTA
 
+### TASK-013 — Lightbox (Fullscreen Image Viewer)
+Status: done
+Description: Click on main product photo opens fullscreen overlay. Arrow navigation, keyboard (Escape/←→), swipe on mobile, dot indicators. Zoom hint shown on hover.
+
+### TASK-014 — Featured Product Clickable
+Status: done
+Description: Hero block on main page was only navigable via the "View details" button. Made the entire block clickable (cursor: pointer + onClick on wrapper).
+
+### TASK-015 — Email CTA (WhatsApp temporarily hidden)
+Status: done
+Description: WhatsApp button hidden pending Business account setup. Replaced with Email CTA (mailto: counterburnaby@master.ca). Pre-filled subject, product details, and direct product URL in the email body. WhatsApp code kept commented out for easy restoration.
+
 ### TASK-006 — Admin Panel
 Status: done
 Description: /admin (product list), /admin/login (cookie auth), /admin/products/new, /admin/products/[id]/edit, image upload with progress indicator

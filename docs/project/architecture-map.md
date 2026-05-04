@@ -74,4 +74,5 @@ Project: HVAC Platform
 | Supabase PostgreSQL | Production database |
 | Supabase Storage | Product images (bucket: products) |
 | Supabase Realtime | Live updates for operator + kiosk |
-| WhatsApp Business API | Inbound messages → sessions |
+| WhatsApp Business API | Inbound messages → sessions (webhook built; Business account pending) |
+| Email (mailto) | Temporary customer contact CTA → counterburnaby@master.ca |
