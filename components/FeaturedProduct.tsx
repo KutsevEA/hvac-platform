@@ -37,13 +37,12 @@ export default function FeaturedProduct({ product, onClick }: FeaturedProductPro
     >
       {/* Image side — 60% on desktop */}
       <div
-        className="w-full md:w-[60%]"
+        className="w-full md:w-[60%] h-[280px] md:h-full"
         style={{
           backgroundColor: '#f5f5f7',
           position: 'relative',
           overflow: 'hidden',
           flexShrink: 0,
-          minHeight: '240px',
         }}
       >
         {mainImage ? (

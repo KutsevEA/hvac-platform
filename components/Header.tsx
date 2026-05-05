@@ -33,7 +33,8 @@ export default function Header() {
         </Link>
 
         {/* Right: Contact button */}
-        <button
+        <a
+          href="mailto:counterburnaby@master.ca"
           style={{
             border: '1px solid #1d1d1f',
             padding: '8px 16px',
@@ -45,6 +46,8 @@ export default function Header() {
             cursor: 'pointer',
             transition: 'background-color 200ms ease, color 200ms ease',
             fontFamily: 'system-ui, -apple-system, Inter, sans-serif',
+            textDecoration: 'none',
+            display: 'inline-block',
           }}
           onMouseEnter={(e) => {
             const btn = e.currentTarget
@@ -58,7 +61,7 @@ export default function Header() {
           }}
         >
           Contact
-        </button>
+        </a>
       </div>
     </header>
   )
